@@ -1,0 +1,39 @@
+<header class="top-nav">
+  <button routerLink="/main-menu" class="logo">
+    <img src="/assets/logo.png" alt="Logo" class="logo">
+  </button>
+  <nav class="main-menu">
+    <ul>
+      <li><button href="#" (click)="goToHome()">Main Menu</button></li>
+      <li><button href="#" (click)="goToUser()">Profile</button></li>
+      <li><button href="#" (click)="logout()">Logout</button></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="container">
+  <div class="user-details">
+    <div class="user-info">
+      <h2>User Details</h2>
+      <div class="user">
+        <div class="user-details">
+          <h3>{{ user.username }}</h3>
+          <!-- Add any other user details you want to display -->
+        </div>
+      </div>
+    </div>
+
+    <div class="user-questions">
+      <h2>Question Asked by {{ user.username }}</h2>
+      <div class="question">
+        <h3>{{ user.question.title }}</h3>
+        <p>{{ user.question.body }}</p>
+        <p><strong>Author:</strong> {{ user.question.author }}</p>
+        <p><strong>Creation Time:</strong> {{ user.question.creationTime }}</p>
+        <p><strong>Creation Date:</strong> {{ user.question.creationDate }}</p>
+        <!-- Display other question details -->
+        <!-- <a [routerLink]="['/question', user.question.id]">View Question</a> -->
+      </div>
+    </div>
+  </div>
+</div>

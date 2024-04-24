@@ -1,0 +1,112 @@
+$base-font-size: 16px; // Define the base font size
+.top-nav {
+  background-color: #007bff;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  flex: 0 0 auto;
+}
+
+.logo img {
+  height: 2rem;
+}
+
+.main-menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.main-menu li {
+  margin-right: 1.5rem;
+}
+
+.main-menu a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+.main-menu a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.question-container {
+  max-width: 37.5rem; // 600px converted to rem
+  margin: 1.25rem auto; // 20px converted to rem
+  padding: 1.25rem; // 20px converted to rem
+  border: 0.0625rem solid #ccc; // 1px converted to rem
+  border-radius: 0.625rem; // 10px converted to rem
+  background-color: #f9f9f9;
+  box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.1); // 10px converted to rem
+  font-family: 'Roboto', sans-serif;
+
+  .question-header {
+    border-bottom: 0.125rem solid #007bff; // 2px converted to rem
+    margin-bottom: 0.625rem; // 10px converted to rem
+    padding-bottom: 0.625rem; // 10px converted to rem
+    font-size: 1.5rem; // 24px converted to rem
+    font-weight: bold;
+    color: #007bff;
+  }
+
+  .question-title {
+    color: #333;
+    margin-bottom: 0.3125rem; // 5px converted to rem
+  }
+
+  .question-author {
+    color: #666;
+    font-size: 0.875rem; // 14px converted to rem
+  }
+
+  .question-content {
+    font-size: 1rem; // 16px converted to rem
+    color: #444;
+    margin-bottom: 0.9375rem; // 15px converted to rem
+  }
+
+  .question-meta {
+    font-size: 0.875rem; // 14px converted to rem
+    color: #666;
+  }
+
+  .answer-section {
+    margin-top: 1.25rem; // 20px converted to rem
+  }
+
+  .answer-input {
+    width: calc(100% - 1.25rem); // 20px converted to rem
+    padding: 0.625rem; // 10px converted to rem
+    border: 0.0625rem solid #ccc; // 1px converted to rem
+    border-radius: 0.3125rem; // 5px converted to rem
+    resize: vertical;
+    font-size: 1rem; // 16px converted to rem
+    margin-bottom: 0.625rem; // 10px converted to rem
+  }
+
+  .submit-button {
+    padding: 0.625rem 1.25rem; // 10px and 20px converted to rem
+    font-size: 1rem; // 16px converted to rem
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 0.3125rem; // 5px converted to rem
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .submit-button:hover {
+    background-color: #0056b3;
+  }
+
+}

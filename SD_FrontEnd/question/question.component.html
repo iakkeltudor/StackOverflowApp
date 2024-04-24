@@ -1,0 +1,34 @@
+<header class="top-nav">
+  <button routerLink="/main-menu" class="logo">
+    <img src="/assets/logo.png" alt="Logo" class="logo">
+  </button>
+  <nav class="main-menu">
+    <ul>
+      <li><button href="#" (click)="goToHome()">Main Menu</button></li>
+      <li><button href="#" (click)="goToUser()">Profile</button></li>
+      <li><button href="#" (click)="logout()">Logout</button></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="question-container">
+  <div class="question-header">
+    <div class="question-title">{{ question1?.title }}</div>
+    <div class="question-author">Asked by {{ question1?.author }}</div>
+  </div>
+  <div class="question-content">
+    <p>{{ question1?.body }}</p>
+  </div>
+  <div class="question-meta">
+    <span>Created on: {{ question1?.creationDate }} at {{ question1?.creationTime }}</span>
+  </div>
+
+  <!-- Answer Section -->
+  <div class="answer-section">
+    <textarea placeholder="Your answer..." rows="3" class="answer-input"></textarea>
+    <div class="answer-meta">
+      <span>Answered on: {{ currentDate }} at {{ currentTime }}</span>
+    </div>
+    <button (click)="submitAnswer()" class="submit-button">Submit Answer</button>
+  </div>
+</div>
