@@ -9,6 +9,7 @@ import {RegisterComponent} from "../register/register.component";
 import {QuestionComponent} from "../question/question.component";
 import { HttpClientModule } from '@angular/common/http';
 import {ButtonModule} from "primeng/button";
+import {CommonModule} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import {ButtonModule} from "primeng/button";
         BrowserModule,
         FormsModule,
         HttpClientModule,
-        ButtonModule
+        ButtonModule,
+        CommonModule
     ],
   providers: [],
   bootstrap: [UserComponent]

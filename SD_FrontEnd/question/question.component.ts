@@ -13,6 +13,30 @@ export class QuestionComponent implements OnInit {
   currentTime: string | undefined;
   newAnswer: string | undefined;
 
+  hardcodedQuestions: Question[] = [
+    {
+      title: 'Sample Question 1',
+      author: 'John Doe',
+      body: 'This is a sample question body 1.',
+      creationDate: '2024-04-15', // Assuming you have creation date available
+      creationTime: '10:00 AM' // Assuming you have creation time available
+    },
+    {
+      title: 'Sample Question 2',
+      author: 'Jane Smith',
+      body: 'This is a sample question body 2.',
+      creationDate: '2024-04-16', // Assuming you have creation date available
+      creationTime: '11:00 AM' // Assuming you have creation time available
+    },
+    {
+      title: 'Sample Question 3',
+      author: 'Alice Johnson',
+      body: 'This is a sample question body 3.',
+      creationDate: '2024-04-17', // Assuming you have creation date available
+      creationTime: '12:00 PM' // Assuming you have creation time available
+    }
+  ];
+
   constructor(private router: Router) { }
 
   ngOnInit(): void {
