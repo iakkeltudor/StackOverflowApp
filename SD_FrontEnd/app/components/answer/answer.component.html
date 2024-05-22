@@ -1,0 +1,45 @@
+<header class="top-nav">
+  <button routerLink="/main-menu" class="logo">
+    <img src="./assets/logo.png" alt="Logo" class="logo" height="99" width="225">
+  </button>
+  <nav class="main-menu">
+    <ul>
+      <li></li>
+      <li><button (click)="goToHome()">Main Menu</button></li>
+      <li><button (click)="goToUser()">Profile</button></li>
+      <li><button (click)="logout()">Logout</button></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="question-container">
+  <div class="tag-container">
+    <div *ngFor="let tag of question?.tags" class="tag">{{ tag.name }}</div>
+  </div>
+  <div class="question-header">
+    <div class="question-title">{{ question?.title }}</div>
+    <div class="question-author">Asked by {{ question?.author?.username }}</div>
+  </div>
+  <div class="question-content">
+    <p>{{ question?.text }}</p>
+    <img [src]="question?.imageUrl" alt="Question Image" class="question-image" *ngIf="question?.imageUrl">
+  </div>
+  <div class="question-meta">
+    <span>Created on: {{ question?.date }} at {{ question?.time }}</span>
+  </div>
+
+  <div *ngIf="question?.answerSet" class="answer-container">
+    <div class="answer" *ngFor="let answer of question?.answerSet">
+      <div>{{ answer.author }} answered:</div>
+      <div>{{ answer.text }}</div>
+    </div>
+  </div>
+
+  <div class="answer-section">
+    <textarea [(ngModel)]="answer" placeholder="Your answer..." rows="3" class="answer-input"></textarea>
+    <div class="answer-meta">
+      <span>Answered on: {{ currentDate }} at {{ currentTime }}</span>
+    </div>
+    <button (click)="submitAnswer()" class="submit-button">Submit Answer</button>
+  </div>
+</div>

@@ -1,0 +1,42 @@
+<header class="top-nav">
+  <button routerLink="/main-menu" class="logo">
+    <img src="./assets/logo.png" alt="Logo" class="logo" height="99" width="225">
+  </button>
+  <nav class="main-menu">
+    <ul>
+      <li></li>
+      <li><button (click)="goToHome()">Main Menu</button></li>
+      <li><button (click)="goToUser()">Profile</button></li>
+      <li><button (click)="logout()">Logout</button></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="center-button-container">
+  <button (click)="goToCreateQuestion()" class="create-question-button">Create Question</button>
+</div>
+
+<div *ngFor="let question of questions" class="question-container" [class.hover]="question.hovered" (click)="goToAnswerPage(question)" (mouseenter)="onMouseEnter(question)" (mouseleave)="onMouseLeave()">
+  <div class="tag-container">
+    <div *ngFor="let tag of question.tags" class="tag">{{ tag.name }}</div>
+  </div>
+  <div class="question-header">
+    <div class="question-title">{{ question.title }}</div>
+    <div class="question-author">Asked by {{ question.author.username }}</div>
+  </div>
+  <div class="question-content">
+    <p>{{ question.text }}</p>
+    <img [src]="question.imageUrl" alt="Question Image" class="question-image" *ngIf="question.imageUrl">
+  </div>
+  <div class="question-meta">
+    <span>Created on: {{ question.date }} at {{ question.time }}</span>
+  </div>
+
+  <div *ngIf="question.author.id === loggedInUserId" class="edit-delete-buttons">
+    <button (click)="editQuestion(question)" class="edit-button">Edit</button>
+    <button (click)="deleteQuestion(question.id)" class="delete-button">Delete</button>
+  </div>
+
+
+</div>
+
