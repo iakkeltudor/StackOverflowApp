@@ -1,53 +1,52 @@
 package com.utcn.StackOverflow.controller;
 
 import com.utcn.StackOverflow.entity.Answer;
-import com.utcn.StackOverflow.entity.Question;
+import com.utcn.StackOverflow.request.DeleteAnswerRequest;
+import com.utcn.StackOverflow.request.InsertAnswerRequest;
 import com.utcn.StackOverflow.service.AnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/answers")
 public class AnswerController {
     @Autowired
     private AnswerService answerService;
 
-    @GetMapping("/getAll")
+    @GetMapping("/getAnswers/{question_id}")
     @ResponseBody
-    public List<Answer> retrieveAllAnswers() {
-        return this.answerService.retrieveAnswers();
+    public List<Answer> retrieveAllAnswers(@PathVariable Long question_id) {
+        return this.answerService.retrieveAnswers(question_id);
     }
 
     @PostMapping("/insertAnswer")
     @ResponseBody
     public Answer insertAnswer(@RequestBody InsertAnswerRequest insertAnswerRequest) {
-        Long id = insertAnswerRequest.getId();
-        String author = insertAnswerRequest.getAuthor();
+        Long authorId = insertAnswerRequest.getAuthorId();
         String text = insertAnswerRequest.getText();
-        String creationDate = insertAnswerRequest.getCreationDate();
-        String creationTime = insertAnswerRequest.getCreationTime();
+        LocalDateTime creationDateTime = insertAnswerRequest.getCreationDateTime();
         Long questionId = insertAnswerRequest.getQuestionId();
 
-        Answer answer = new Answer(id, author, text, creationDate, creationTime, questionId);
+        Answer answer = new Answer(authorId, text, creationDateTime, questionId);
 
         return this.answerService.insertAnswer(answer);
     }
 
-    @PutMapping("updateAnswer")
+    @PutMapping("updateAnswer/{id}")
     @ResponseBody
-    public Answer updateAnswer(@RequestBody InsertAnswerRequest insertAnswerRequest) {
-        Long id = insertAnswerRequest.getId();
-        String author = insertAnswerRequest.getAuthor();
+    public Answer updateAnswer(@PathVariable Long id, @RequestBody InsertAnswerRequest insertAnswerRequest) {
+        Long authorId = insertAnswerRequest.getAuthorId();
         String text = insertAnswerRequest.getText();
-        String creationDate = insertAnswerRequest.getCreationDate();
-        String creationTime = insertAnswerRequest.getCreationTime();
+        LocalDateTime creationDateTime = insertAnswerRequest.getCreationDateTime();
         Long questionId = insertAnswerRequest.getQuestionId();
 
-        //Answer answer = new Answer(id, author, text, creationDate, creationTime, questionId);
+        //Answer answer = new Answer(authorId, text, creationDateTime, questionId);
 
-        return this.answerService.updateAnswer(id, author, text, creationDate, creationTime, questionId);
+        return this.answerService.updateAnswer(id, authorId, text, creationDateTime, questionId);
     }
 
     @DeleteMapping("/deleteAnswer")

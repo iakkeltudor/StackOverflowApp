@@ -1,6 +1,7 @@
 package com.utcn.StackOverflow.controller;
 
 import com.utcn.StackOverflow.entity.User;
+import com.utcn.StackOverflow.request.DeleteUserRequest;
 import com.utcn.StackOverflow.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

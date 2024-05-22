@@ -1,47 +1,20 @@
-package com.utcn.StackOverflow.entity;
-
-import jakarta.persistence.*;
+package com.utcn.StackOverflow.request;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
-@Entity
-@Table(name="answer")
-public class Answer {
-    @Id
-    @Column(name="A_ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ID;
-
-    @Column(name = "author_id")
+public class InsertAnswerRequest {
+    private Long id;
     private Long authorId;
-
-    @Column(name = "text")
     private String text;
-
-    @Column(name="creation_date_time")
     private LocalDateTime creationDateTime;
-
-    @Column(name = "question_id")
     private Long questionId;
 
-    public Answer() {
-
+    public Long getId() {
+        return id;
     }
 
-    public Answer(Long authorId, String text, LocalDateTime creationDateTime, Long questionId) {
-        this.authorId = authorId;
-        this.text = text;
-        this.creationDateTime = creationDateTime;
-        this.questionId = questionId;
-    }
-
-    public Long getID() {
-        return ID;
-    }
-
-    public void setID(Long ID) {
-        this.ID = ID;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getAuthorId() {

@@ -2,6 +2,10 @@ package com.utcn.StackOverflow.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -14,13 +18,11 @@ public class Question {
     private Long ID;
 
     @OneToMany(mappedBy = "questionId")
-    Set<Answer> answerSet;
+    List<Answer> answerSet;
 
-    @ManyToMany(mappedBy = "questionSet")
-    Set<User> userSet;
-
-    @Column(name="author_id")
-    private Long authorId;
+    @ManyToOne
+    @JoinColumn(name="author_id", referencedColumnName = "U_ID")
+    private User author;
 
     @Column(name="title")
     private String title;
@@ -28,23 +30,31 @@ public class Question {
     @Column(name="text")
     private String text;
 
-    @Column(name="creation_date")
-    private String date;
+    @Column(name="creation_date_time")
+    private LocalDateTime creationDateTime;
 
-    @Column(name="creation_time")
-    private String time;
+    @ManyToMany
+    @JoinTable(
+            name = "question_tag",
+            joinColumns = @JoinColumn(name = "q_id"),
+            inverseJoinColumns = @JoinColumn(name = "t_id")
+    )
+    private List<Tag> tags;
+
+    @Column(name="image_path")
+    private String imagePath;
 
     public Question() {
 
     }
 
-    public Question(Long ID, Long authorId, String title, String text, String date, String time) {
-        this.ID = ID;
-        this.authorId = authorId;
+    public Question(User user, String title, String text, LocalDateTime creationDateTime, List<Tag> tags, String imagePath) {
+        this.author = user;
         this.title = title;
         this.text = text;
-        this.date = date;
-        this.time = time;
+        this.creationDateTime = creationDateTime;
+        this.tags = tags;
+        this.imagePath = imagePath;
     }
 
     public Long getID() {
@@ -55,29 +65,21 @@ public class Question {
         this.ID = ID;
     }
 
-    public Set<User> getUserSet() {
-        return userSet;
-    }
-
-    public void setUserSet(Set<User> userSet) {
-        this.userSet = userSet;
-    }
-
-    public Set<Answer> getAnswerSet() {
+    public List<Answer> getAnswerSet() {
         return answerSet;
     }
 
-    public void setAnswerSet(Set<Answer> answerSet) {
+    public void setAnswerSet(List<Answer> answerSet) {
         this.answerSet = answerSet;
     }
 
-    public Long getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
-    }
+//    public Long getAuthorId() {
+//        return authorId;
+//    }
+//
+//    public void setAuthorId(Long authorId) {
+//        this.authorId = authorId;
+//    }
 
     public String getTitle() {
         return title;
@@ -95,19 +97,36 @@ public class Question {
         this.text = text;
     }
 
-    public String getDate() {
-        return date;
+    public LocalDateTime getCreationDateTime() {
+        return creationDateTime;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setCreationDateTime(LocalDateTime creationDateTime) {
+        this.creationDateTime = creationDateTime;
     }
 
-    public String getTime() {
-        return time;
+    public User getAuthor() {
+        return author;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setAuthor(User author) {
+        this.author = author;
     }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
 }

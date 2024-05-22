@@ -5,6 +5,8 @@ import com.utcn.StackOverflow.repository.AnswerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,8 +20,8 @@ public class AnswerService {
         return answerRepository.save(answer);
     }
 
-    public List<Answer> retrieveAnswers() {
-        return (List<Answer>) this.answerRepository.findAll();
+    public List<Answer> retrieveAnswers(Long id) {
+        return this.answerRepository.findByQuestionId(id);
     }
 
     public String deleteById(Long answerId) {
@@ -31,16 +33,15 @@ public class AnswerService {
         }
     }
 
-    public Answer updateAnswer(Long answerId, String author, String newText, String creationDate, String creationTime, Long questionId) {
+    public Answer updateAnswer(Long answerId, Long authorId, String newText, LocalDateTime creationDateTime, Long questionId) {
         try {
             Optional<Answer> optionalAnswer = answerRepository.findById(answerId);
             if (optionalAnswer.isPresent()) {
                 Answer answer = optionalAnswer.get();
                 answer.setID(answerId);
-                answer.setAuthor(author);
+                answer.setAuthorId(authorId);
                 answer.setText(newText);
-                answer.setDate(creationDate);
-                answer.setTime(creationTime);
+                answer.setCreationDateTime(creationDateTime);
                 answer.setQuestionId(questionId);
                 answerRepository.save(answer);
                 return answer;

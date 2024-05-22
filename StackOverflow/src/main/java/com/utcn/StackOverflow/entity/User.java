@@ -13,16 +13,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ID;
 
-    @ManyToMany
-    @JoinTable(
-            name="uq",
-            joinColumns = @JoinColumn(name = "F_U_ID"),
-            inverseJoinColumns = @JoinColumn(name = "F_Q_ID")
-    )
-    Set<Question> questionSet;
+    @OneToMany(mappedBy = "ID")
+    private Set<Question> questionSet;
 
-    @ManyToMany(mappedBy = "userSet")
-    Set<Answer> answerSet;
+    @OneToMany(mappedBy = "ID")
+    private Set<Answer> answerSet;
 
     @Column(name="username")
     private String username;
@@ -80,3 +75,5 @@ public class User {
         this.answerSet = answerSet;
     }
 }
+
+

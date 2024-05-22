@@ -15,7 +15,7 @@ public class UserService {
     private UserRepository userRepository;
 
     public List<User> retrieveUsers() {
-        return (List<User>) this.userRepository.findAll();
+        return (List<User>) userRepository.findAll();
     }
 
     public User updateUser(Long userId, String newUsername, String newPassword) {
@@ -35,15 +35,20 @@ public class UserService {
     }
 
     public User insertUser(User user) {
-        return this.userRepository.save(user);
+        return userRepository.save(user);
     }
 
     public String deleteById(Long id) {
         try {
-            this.userRepository.deleteById(id);
+            userRepository.deleteById(id);
             return "User with id " + id + " was deleted successfully.";
         } catch (Exception e) {
             return "Failed to delete user with id " + id;
         }
+    }
+
+    public User retrieveById(Long id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        return optionalUser.orElse(null);
     }
 }
