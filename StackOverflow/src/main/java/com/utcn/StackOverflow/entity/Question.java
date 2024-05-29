@@ -44,6 +44,9 @@ public class Question {
     @Column(name="image_path")
     private String imagePath;
 
+    @Column(name="score")
+    private int score;
+
     public Question() {
 
     }
@@ -129,4 +132,11 @@ public class Question {
         this.imagePath = imagePath;
     }
 
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
 }

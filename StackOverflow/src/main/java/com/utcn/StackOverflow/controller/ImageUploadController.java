@@ -30,7 +30,7 @@ public class ImageUploadController {
         return ResponseEntity.ok("Image uploaded successfully: " + fileName);
     }
 
-    @GetMapping(value = "/images/{fileName}", produces = MediaType.IMAGE_JPEG_VALUE)
+    @GetMapping(value = "/images/{fileName}")
     public ResponseEntity<byte[]> getImage(@PathVariable String fileName) throws IOException {
         byte[] imageData = imageService.loadFileAsBytes(fileName);
         HttpHeaders headers = new HttpHeaders();

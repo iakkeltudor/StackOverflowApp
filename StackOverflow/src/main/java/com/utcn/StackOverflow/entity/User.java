@@ -25,6 +25,18 @@ public class User {
     @Column(name="password")
     private String password;
 
+    @Column(name="email")
+    private String email;
+
+    @Column(name="points")
+    private float points;
+
+    @Column(name="role")
+    private String role;
+
+    @Column(name="banned")
+    private int banned;
+
     public User() {
 
     }
@@ -73,6 +85,38 @@ public class User {
 
     public void setAnswerSet(Set<Answer> answerSet) {
         this.answerSet = answerSet;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public float getPoints() {
+        return points;
+    }
+
+    public void setPoints(float points) {
+        this.points = points;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public int getBanned() {
+        return banned;
+    }
+
+    public void setBanned(int banned) {
+        this.banned = banned;
     }
 }
 

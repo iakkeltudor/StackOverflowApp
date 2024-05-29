@@ -18,4 +18,8 @@ public class TagService {
             return existingTag;
         }
     }
+
+    public Tag findByTagName(String name) {
+        return tagRepository.findByName(name);
+    }
 }

@@ -1,21 +1,18 @@
 package com.utcn.StackOverflow.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.utcn.StackOverflow.entity.User;
+
 import java.time.LocalDateTime;
 
 public class InsertAnswerRequest {
-    private Long id;
     private Long authorId;
+    private User author;
     private String text;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime creationDateTime;
     private Long questionId;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private String imagePath;
 
     public Long getAuthorId() {
         return authorId;
@@ -23,6 +20,14 @@ public class InsertAnswerRequest {
 
     public void setAuthorId(Long authorId) {
         this.authorId = authorId;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
     }
 
     public String getText() {
@@ -47,5 +52,13 @@ public class InsertAnswerRequest {
 
     public void setQuestionId(Long questionId) {
         this.questionId = questionId;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 }

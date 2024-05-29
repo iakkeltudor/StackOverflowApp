@@ -3,7 +3,6 @@ package com.utcn.StackOverflow.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Entity
 @Table(name="answer")
@@ -13,8 +12,9 @@ public class Answer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ID;
 
-    @Column(name = "author_id")
-    private Long authorId;
+    @ManyToOne
+    @JoinColumn(name="author_id", referencedColumnName = "U_ID")
+    private User author;
 
     @Column(name = "text")
     private String text;
@@ -25,15 +25,22 @@ public class Answer {
     @Column(name = "question_id")
     private Long questionId;
 
+    @Column(name = "image_path")
+    private String imagePath;
+
+    @Column(name = "score")
+    private int score;
+
     public Answer() {
 
     }
 
-    public Answer(Long authorId, String text, LocalDateTime creationDateTime, Long questionId) {
-        this.authorId = authorId;
+    public Answer(User author, String text, LocalDateTime creationDateTime, Long questionId, String imagePath) {
+        this.author = author;
         this.text = text;
         this.creationDateTime = creationDateTime;
         this.questionId = questionId;
+        this.imagePath = imagePath;
     }
 
     public Long getID() {
@@ -44,12 +51,13 @@ public class Answer {
         this.ID = ID;
     }
 
-    public Long getAuthorId() {
-        return authorId;
+
+    public User getAuthor() {
+        return author;
     }
 
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
+    public void setAuthor(User author) {
+        this.author = author;
     }
 
     public String getText() {
@@ -74,5 +82,21 @@ public class Answer {
 
     public void setQuestionId(Long questionId) {
         this.questionId = questionId;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }

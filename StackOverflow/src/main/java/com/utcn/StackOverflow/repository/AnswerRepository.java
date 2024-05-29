@@ -7,4 +7,7 @@ import java.util.List;
 
 public interface AnswerRepository extends CrudRepository<Answer, Long> {
     List<Answer> findByQuestionId(Long questionId);
+    void deleteByQuestionId(Long questionId);
+
+    List<Answer> findByQuestionIdOrderByScoreDesc(Long id);
 }
