@@ -14,7 +14,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @SuppressWarnings("removal")
 @Configuration
 @EnableWebSecurity
-//@EnableMethodSecurity
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
@@ -27,15 +27,15 @@ public class SecurityConfiguration {
         http
                 .csrf()
                 .disable()
-                .authorizeRequests()
-                .requestMatchers("/**") // Allow access to all endpoints
-                .permitAll()
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-                //.and()
-//                .authenticationProvider(authenticationProvider)
-//                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/api/v1/auth/**").permitAll() // Allow access to authentication endpoints
+                        .anyRequest().authenticated() // Restrict access to all other endpoints
+                )
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

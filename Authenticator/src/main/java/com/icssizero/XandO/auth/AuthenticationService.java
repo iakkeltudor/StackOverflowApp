@@ -31,8 +31,11 @@ public class AuthenticationService {
         String encryptedPassword = bytesToHex(hashPassword(request.getPassword()));
         var user = User.builder()
                 .username(request.getUsername())
+                .email(request.getEmail())
                 .password(encryptedPassword)
                 .role(Role.USER)
+                .banned(0)
+                .points(0)
                 .build();
         repository.save(user);
         var jwtToken = jwtService.generateToken(user);
@@ -78,6 +81,7 @@ public class AuthenticationService {
         return AuthenticationResponse
                 .builder()
                 .token(jwtToken)
+                .ID((long) user.getID())
                 .build();
     }
 }

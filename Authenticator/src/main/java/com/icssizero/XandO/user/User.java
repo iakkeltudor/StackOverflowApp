@@ -21,11 +21,14 @@ import java.util.List;
 public class User implements UserDetails {
 
     @Id
-    @Column(name="U_ID")
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "U_ID")
     private int ID;
     private String username;
     private String password;
+    private String email;
+    private int points;
+    private int banned;
 
     @Enumerated(EnumType.STRING)
     private Role role;
