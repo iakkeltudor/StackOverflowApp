@@ -6,7 +6,10 @@ export class Answer {
   text: string = '';
   date: string = '';
   time: string = '';
-  creationDateTime: string[] = [];
+  creationDateTime: string = '';
   author: User = new User();
   authorId: number = 0;
+  imagePath: string = '';
+  imageUrl: string = '';
+  score: number = 0;
 }

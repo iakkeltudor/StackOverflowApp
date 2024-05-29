@@ -6,17 +6,18 @@ import { ButtonModule } from "primeng/button";
 import { QuestionService } from "../../service/question.service";
 import { ImageService } from "../../service/image.service";
 import {Tag} from "../tag/tag.model";
+import {AnswerService} from "../../service/answer.service";
 import {Location} from "@angular/common";
 
 @Component({
-  selector: 'app-edit-question',
+  selector: 'app-edit-answer',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink, ButtonModule],
-  templateUrl: './edit-question.component.html',
-  styleUrls: ['./edit-question.component.scss'],
+  templateUrl: './edit-answer.component.html',
+  styleUrls: ['./edit-answer.component.scss'],
   providers: [DatePipe]
 })
-export class EditQuestionComponent implements OnInit {
+export class EditAnswerComponent implements OnInit {
 
   title: string = '';
   text: string = '';
@@ -26,12 +27,13 @@ export class EditQuestionComponent implements OnInit {
   imageUrl: string = '';
   newImage: File | null = null;
   creationDateTime: string | null = '';
+  questionId: string = '';
   loggedInUserId: string = '';
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private questionService: QuestionService,
+    private answerService: AnswerService,
     private imageService: ImageService,
     private datePipe: DatePipe,
     private location: Location
@@ -45,27 +47,12 @@ export class EditQuestionComponent implements OnInit {
       this.logout();
     }
     this.route.queryParams.subscribe(params => {
-      this.title = params['title'];
       this.text = params['text'];
-      this.tagInput = params['tags'];
       this.imagePath = params['imagePath'];
       this.imageUrl = params['imageUrl'];
-
-      if (!Array.isArray(this.tags)) {
-        this.tags = [];
-      } else {
-        this.tags = this.tags.map((tag: any) => {
-          if (typeof tag === 'string') {
-            return { name: tag };
-          } else {
-            return tag;
-          }
-        });
-      }
-
-      // Join existing tags into a string separated by commas
-      this.tagInput = this.tags.map(tag => tag.name).join(', ');
+      this.questionId = params['questionId'];
     });
+
   }
 
   onFileSelected(event: any): void {
@@ -74,11 +61,8 @@ export class EditQuestionComponent implements OnInit {
     }
   }
 
-  updateQuestion() {
-
-    this.addTag();
-
-    if(!this.title || !this.text || !this.tags.length) {
+  updateAnswer() {
+    if(!this.text) {
       alert('Please fill in all required fields.');
       return;
     }
@@ -93,18 +77,17 @@ export class EditQuestionComponent implements OnInit {
       this.imagePath = this.newImage.name;
     }
 
-    const updatedQuestion = {
-      title: this.title,
+    const updatedAnswer = {
       text: this.text,
-      tags: this.tags.map(tag => tag.name), // Convert tags to array of strings
+      questionId: this.questionId,
       authorId: localStorage.getItem('userId') || '',
       imagePath: this.imagePath,
       creationDateTime: this.creationDateTime
     };
 
-    const questionId = this.route.snapshot.queryParams['id'];
+    const answerId = this.route.snapshot.queryParams['id'];
 
-    this.questionService.updateQuestion(updatedQuestion, questionId).subscribe(
+    this.answerService.updateAnswer(updatedAnswer, answerId).subscribe(
       (response) => {
         if (this.newImage) {
           this.uploadImage();
@@ -112,7 +95,6 @@ export class EditQuestionComponent implements OnInit {
         this.location.back();
       }
     );
-
   }
 
   uploadImage() {
@@ -135,19 +117,4 @@ export class EditQuestionComponent implements OnInit {
     this.router.navigate(['/question']);
   }
 
-  addTag() {
-    const newTagNames = this.tagInput.split(',').map(tag => tag.trim());
-    newTagNames.forEach(newTagName => {
-      if (newTagName !== '') {
-        // Check if the tag already exists
-        if (!this.tags.some(tag => tag.name === newTagName)) {
-          // Add the new tag
-          this.tags.push({ name: newTagName });
-          this.tagInput = ''; // Clear the tag input field after adding
-        } else {
-          alert('Tag already exists.');
-        }
-      }
-    });
-  }
 }

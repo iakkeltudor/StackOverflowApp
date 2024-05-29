@@ -15,5 +15,7 @@ export class Question{
   imagePath: string = "Dummy"
   imageUrl: string = "Dummy"
   hovered: boolean = false
+  score: number = 0
+  userVote: string = "Dummy"
   id: number = 0
 }

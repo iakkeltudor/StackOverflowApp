@@ -10,6 +10,9 @@ import {Tag} from "../tag/tag.model";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
 import {ImageService} from "../../service/image.service";
+import {QuestionVote} from "./question-vote.model";
+import {UserService} from "../../service/user.service";
+import {User} from "../user/user.model";
 
 @Component({
   selector: 'app-question',
@@ -19,15 +22,18 @@ import {ImageService} from "../../service/image.service";
   styleUrls: ['./question.component.scss']
 })
 export class QuestionComponent implements OnInit {
-  question1: Question | undefined;
-  currentDate: string | undefined;
-  currentTime: string | undefined;
-  newAnswer: string | undefined;
 
   questions: Question[] = [];
   protected loggedInUserId: number | undefined;
+  points: number | undefined;
 
-  constructor(private questionService: QuestionService, private router: Router, private imageService: ImageService) { }
+  searchText: string = '';
+  searchTag: string = '';
+  searchUser: string = '';
+
+  loggedInUser: User = new User();
+
+  constructor(private questionService: QuestionService, private router: Router, private imageService: ImageService, private userService: UserService) { }
 
   ngOnInit(): void {
     const userId = localStorage.getItem('userId');
@@ -35,26 +41,33 @@ export class QuestionComponent implements OnInit {
       this.loggedInUserId = parseInt(userId, 10);
     }
 
+    if(!this.loggedInUserId) {
+      this.logout();
+    }
+
+    this.userService.getUserById(this.loggedInUserId).subscribe((data: any) => {
+      this.loggedInUser = data;
+    });
+
     this.questionService.getQuestions().subscribe((data: any[]) => {
       this.questions = data.map(question => {
-        console.log('Question:', question);
         const [year, month, day, hour, minute] = question.creationDateTime;
         const date = `${year}-${month}-${day}`;
-        const time = `${hour}:${minute}`;
+        const time = `${hour}:${minute.toString().padStart(2, '0')}`;
         question.date = date;
         question.time = time;
         if (question.imagePath) {
           this.loadImage(question);
         }
+        //this.getPoints(question.author.id);
         return question;
       });
     });
+
   }
 
   private loadImage(question: any) {
-    //console.log('serus');
     this.imageService.getImage(question.imagePath).subscribe(blob => {
-      console.log('imagePath:', question.imagePath);
       const reader = new FileReader();
       reader.onload = (e: any) => {
         question.imageUrl = e.target.result;
@@ -79,13 +92,6 @@ export class QuestionComponent implements OnInit {
     this.router.navigate(['/create-question']);
   }
 
-  submitAnswer(question: any) {
-    const answer = this.newAnswer;
-    console.log('Answer submitted:', question.answer);
-    console.log('Question ID:', question.id);
-    this.newAnswer = '';
-  }
-
   editQuestion(question: Question) {
     const tagNames = question.tags.map(tag => tag.name);
 
@@ -94,6 +100,8 @@ export class QuestionComponent implements OnInit {
         id: question.id,
         title: question.title,
         text: question.text,
+        imageUrl: question.imageUrl,
+        imagePath: question.imagePath,
         tags: tagNames.join(',')
       }
     });
@@ -122,4 +130,93 @@ export class QuestionComponent implements OnInit {
       }
     });
   }
+
+  upvoteQuestion(question: Question) {
+    this.questionService.upVote(question.id, this.loggedInUserId).subscribe((response: string) => {
+      alert(response);
+    });
+  }
+
+  downvoteQuestion(question: Question) {
+    this.questionService.downVote(question.id, this.loggedInUserId).subscribe((response: string) => {
+      alert(response);
+    });
+  }
+
+  getPoints(id: number) {
+    this.userService.getPoints(id).subscribe((points: number) => {
+      this.points = points;
+    });
+  }
+
+  filterOwnQuestions() {
+    this.questionService.getOwnQuestions(this.loggedInUserId).subscribe((data: any[]) => {
+      this.questions = data.map(question => {
+        const [year, month, day, hour, minute] = question.creationDateTime;
+        const date = `${year}-${month}-${day}`;
+        const time = `${hour}:${minute.toString().padStart(2, '0')}`;
+        question.date = date;
+        question.time = time;
+        if (question.imagePath) {
+          this.loadImage(question);
+        }
+        return question;
+      });
+    });
+  }
+
+  applyFilter() {
+    if (this.searchText && this.searchTag || this.searchText && this.searchUser || this.searchTag && this.searchUser || this.searchText && this.searchTag && this.searchUser) {
+      alert('Please provide only one filter');
+      return;
+    } else if(!this.searchText && !this.searchTag && !this.searchUser) {
+      alert('Please provide a filter');
+      return;
+    } else {
+      if(this.searchText) {
+        this.questionService.getQuestionByText(this.searchText).subscribe((data: any[]) => {
+          this.questions = data.map(question => {
+            const [year, month, day, hour, minute] = question.creationDateTime;
+            const date = `${year}-${month}-${day}`;
+            const time = `${hour}:${minute.toString().padStart(2, '0')}`;
+            question.date = date;
+            question.time = time;
+            if (question.imagePath) {
+              this.loadImage(question);
+            }
+            return question;
+          });
+        });
+      } else if (this.searchTag) {
+        this.questionService.getQuestionByTag(this.searchTag).subscribe((data: any[]) => {
+          this.questions = data.map(question => {
+            const [year, month, day, hour, minute] = question.creationDateTime;
+            const date = `${year}-${month}-${day}`;
+            const time = `${hour}:${minute.toString().padStart(2, '0')}`;
+            question.date = date;
+            question.time = time;
+            if (question.imagePath) {
+              this.loadImage(question);
+            }
+            return question;
+          });
+        });
+      } else if (this.searchUser) {
+        this.questionService.getQuestionByUsername(this.searchUser).subscribe((data: any[]) => {
+          this.questions = data.map(question => {
+            const [year, month, day, hour, minute] = question.creationDateTime;
+            const date = `${year}-${month}-${day}`;
+            const time = `${hour}:${minute.toString().padStart(2, '0')}`;
+            question.date = date;
+            question.time = time;
+            if (question.imagePath) {
+              this.loadImage(question);
+            }
+            return question;
+          });
+        });
+      }
+    }
+  }
+
 }

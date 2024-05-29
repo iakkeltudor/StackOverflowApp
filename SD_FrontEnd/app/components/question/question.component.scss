@@ -9,26 +9,6 @@ $base-font-size: 16px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.create-question-button {
-  padding: 1rem 2rem;
-  background-color: #006bff;
-  color: #fff;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-top: 1rem;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.create-question-button:hover,
-.main-menu button:hover {
-  background-color: #0056b3;
-}
-
-
 .logo {
   flex: 0 0 auto;
 }
@@ -49,16 +29,73 @@ $base-font-size: 16px;
   margin-right: 1.5rem;
 }
 
-.main-menu a {
+.main-menu button {
+  background: none;
+  border: none;
   color: #fff;
-  text-decoration: none;
   font-size: 1rem;
+  cursor: pointer;
   transition: color 0.3s ease;
 }
 
-.main-menu a:hover {
+.main-menu button:hover {
+  color: #f0f0f0;
+}
+
+.create-question-button {
+  padding: 1rem 2rem;
+  background-color: #006bff;
   color: #fff;
-  text-decoration: underline;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 1rem;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.create-question-button:hover,
+.main-menu button:hover {
+  background-color: #0056b3;
+}
+
+.filter-container {
+  max-width: 600px;
+  margin: 1rem auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+
+  input {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    outline: none;
+  }
+
+  button {
+    padding: 0.5rem 1rem;
+    background-color: #006bff;
+    color: #fff;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  button:hover {
+    background-color: #0056b3;
+  }
 }
 
 .question-container {
@@ -78,6 +115,41 @@ $base-font-size: 16px;
   $button-font-size: 1rem;
   $button-border-radius: 0.25rem;
   $button-transition: background-color 0.3s ease, color 0.3s ease;
+
+  .vote-container {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .vote-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .vote-button img {
+    width: 20px;
+    height: 20px;
+  }
+
+  .upvote img {
+    transform: rotate(0deg);
+  }
+
+  .downvote img {
+    transform: rotate(180deg);
+  }
+
+  .vote-score {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+    font-weight: bold;
+  }
 
   .edit-delete-buttons {
     display: flex;

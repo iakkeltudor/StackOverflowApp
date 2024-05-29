@@ -15,4 +15,38 @@ export class AnswerService {
       map((response: any) => response as Answer[])
     );
   }
+
+  createAnswer(answer: {
+    questionId: number | undefined;
+    imagePath: string;
+    text: string;
+    authorId: number;
+    creationDateTime: string | null
+  }): Observable<Answer> {
+    return this.http.post<Answer>(`${this.apiUrl}/insertAnswer`, answer);
+  }
+
+  deleteAnswer(id: number | undefined): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/deleteAnswer/${id}`);
+  }
+
+  updateAnswer(answer: {
+    imagePath: string;
+    questionId: string;
+    text: string;
+    authorId: string;
+    creationDateTime: string | null
+  }, id: number): Observable<Answer> {
+    return this.http.put<Answer>(`${this.apiUrl}/updateAnswer/${id}`, answer);
+  }
+
+  upVote(answerId: number, userId: number): Observable<void> {
+    const VoteRequest = {userId: userId};
+    return this.http.post<void>(`${this.apiUrl}/upVote/${answerId}`, VoteRequest);
+  }
+
+  downVote(answerId: number, userId: number): Observable<void> {
+    const VoteRequest = {userId: userId};
+    return this.http.post<void>(`${this.apiUrl}/downVote/${answerId}`, VoteRequest);
+  }
 }

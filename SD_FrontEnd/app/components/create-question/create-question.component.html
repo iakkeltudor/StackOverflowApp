@@ -1,6 +1,6 @@
 <header class="top-nav">
   <button routerLink="/main-menu" class="logo">
-    <img src="./assets/logo.png" alt="Logo" class="logo" height="99" width="225">
+    <img src="./assets/logo.png" alt="Logo" class="logo">
   </button>
   <nav class="main-menu">
     <ul>
@@ -29,7 +29,7 @@
     </div>
     <div class="form-group">
       <label>Tags</label>
-      <input type="text" class="form-control" [(ngModel)]="tagInput" (keydown.enter)="addTag()" name="tags">
+      <input type="text" class="form-control" [(ngModel)]="tagInput" name="tags">
       <div *ngFor="let tag of tags" class="tag">{{ tag.name }}</div>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>

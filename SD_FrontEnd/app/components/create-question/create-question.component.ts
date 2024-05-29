@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { ButtonModule } from "primeng/button";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
@@ -11,6 +11,7 @@ import {ImageService} from "../../service/image.service";
 import {Tag} from "../tag/tag.model";
 import {Observable} from "rxjs";
 import {response} from "express";
+import {Location} from "@angular/common";
 
 @Component({
   selector: 'app-create-question',
@@ -21,7 +22,7 @@ import {response} from "express";
   providers: [DatePipe]
 
 })
-export class CreateQuestionComponent {
+export class CreateQuestionComponent implements OnInit {
   title: string = '';
   text: string = '';
   imagePath: string = '';
@@ -29,8 +30,12 @@ export class CreateQuestionComponent {
   tagInput: string = '';
   picture: File | null = null;
 
-  userId: string = localStorage.getItem('userId') || '';
-
+  loggedInUserId: string = localStorage.getItem('userId') || '';
+  ngOnInit() {
+    if(!this.loggedInUserId) {
+      this.logout();
+    }
+  }
 
   constructor(
     private router: Router,
@@ -38,19 +43,16 @@ export class CreateQuestionComponent {
     private imageService: ImageService,
     private datePipe: DatePipe,
     private route: ActivatedRoute,
-    private http: HttpClient
+    private http: HttpClient,
+    private location: Location
   ) {}
 
   onSubmit() {
 
+    this.addTag();
+
     if (!this.title || !this.text || !this.tags.length || !this.picture) {
       alert('Please fill in all required fields.');
-      console.log('Title:', this.title);
-      console.log('Text:', this.text);
-      console.log('Tags:', this.tags);
-      // @ts-ignore
-      console.log('Picture name:', this.picture.name);
-      console.log('Picture:', this.picture, "asdasdasd");
       return;
     }
 
@@ -65,7 +67,7 @@ export class CreateQuestionComponent {
       text: this.text,
       imagePath: this.imagePath,
       tags: this.tags.map(tag => tag.name),
-      authorId: this.userId,
+      authorId: this.loggedInUserId,
       creationDateTime: creationDateTime,
     };
 
@@ -73,7 +75,6 @@ export class CreateQuestionComponent {
 
     this.questionService.createQuestion(questionData).subscribe(
       (response) => {
-        console.log('Question created:', response);
         this.title = '';
         this.text = '';
         this.imagePath = '';
@@ -81,7 +82,7 @@ export class CreateQuestionComponent {
         this.tagInput = '';
       }
     );
-    this.goToHome();
+    this.location.back();
   }
 
   onFileSelected(event: any) {
@@ -106,12 +107,7 @@ export class CreateQuestionComponent {
 
   onUpload() {
     if (this.picture) {
-      console.log('cf ba');
-      console.log(this.picture);
-      this.imageService.uploadImage(this.picture).subscribe(
-        response => {
-          console.log('Image uploaded:', response);
-      });
+      this.imageService.uploadImage(this.picture).subscribe();
     }
   }
 

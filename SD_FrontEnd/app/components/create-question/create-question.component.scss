@@ -6,7 +6,7 @@ $base-font-size: 16px; // Define the base font size
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.5rem 2rem; // Decrease padding for top nav
+  padding: 0.5rem 2rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -30,16 +30,17 @@ $base-font-size: 16px; // Define the base font size
   margin-right: 1.5rem;
 }
 
-.main-menu a {
+.main-menu button {
+  background: none;
+  border: none;
   color: #fff;
-  text-decoration: none;
   font-size: 1rem;
+  cursor: pointer;
   transition: color 0.3s ease;
 }
 
-.main-menu a:hover {
-  color: #fff;
-  text-decoration: underline;
+.main-menu button:hover {
+  color: #f0f0f0;
 }
 
 .create-question-container {

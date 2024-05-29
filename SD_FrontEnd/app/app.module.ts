@@ -13,11 +13,11 @@ import {CommonModule} from "@angular/common";
 import {CreateQuestionComponent} from "./components/create-question/create-question.component";
 import {EditQuestionComponent} from "./components/edit-question/edit-question.component";
 import {AnswerComponent} from "./components/answer/answer.component";
+import {EditAnswerComponent} from "./components/edit-answer/edit-answer.component";
 
 @NgModule({
   declarations: [
-    UserComponent,
-    RegisterComponent
+
   ],
   imports: [
     AppRoutingModule,
@@ -30,10 +30,13 @@ import {AnswerComponent} from "./components/answer/answer.component";
     LoginComponent,
     CreateQuestionComponent,
     EditQuestionComponent,
-    AnswerComponent
+    AnswerComponent,
+    EditAnswerComponent,
+    UserComponent,
+    RegisterComponent
   ],
   providers: [],
-  bootstrap: [UserComponent]
+  bootstrap: []
 
 })
 export class AppModule {

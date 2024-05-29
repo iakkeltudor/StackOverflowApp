@@ -1,6 +1,6 @@
 <header class="top-nav">
   <button routerLink="/main-menu" class="logo">
-    <img src="/src/assets/logo.png" alt="Logo" class="logo">
+    <img src="./assets/logo.png" alt="Logo" class="logo">
   </button>
   <nav class="main-menu">
     <ul>
@@ -14,23 +14,36 @@
 <div class="container">
   <div class="user-details">
     <div class="user-info">
-      <h2>User Details</h2>
+      <h2>My Profile</h2>
       <div class="user">
         <div class="user-details">
           <h3>{{ user.username }}</h3>
+          <p><strong>Points:</strong> {{ user.points }}</p>
+          <p>Role: {{user.role}}</p>
         </div>
       </div>
     </div>
 
+    <div *ngIf="user.role === 'ADMIN'">
+      <h2>All Users</h2>
+      <div *ngFor="let user of allUsers" class="user-container">
+        <div>{{ user.username }}</div>
+        <button *ngIf="user.role === 'USER' && !user.banned" class="ban-button" (click)="openBanUserDialog(user.id)">BAN</button>
+        <button *ngIf="user.role === 'USER' && user.banned" class="ban-button" (click)="unbanUser(user.id)">UNBAN</button>
+      </div>
+    </div>
+
     <div class="user-questions">
-      <h2>Question Asked by {{ user.username }}</h2>
-      <div class="question">
-        <h3>{{ user.question.title }}</h3>
-        <p>{{ user.question.body }}</p>
-        <p><strong>Author:</strong> {{ user.question.author }}</p>
-        <p><strong>Creation Time:</strong> {{ user.question.creationTime }}</p>
-        <p><strong>Creation Date:</strong> {{ user.question.creationDate }}</p>
+      <h2>Questions Asked by {{ user.username }}</h2>
+      <div *ngFor="let question of this.questions" class="question">
+        <h3><strong>{{ question.title }}</strong></h3>
+        <p>{{ question.text }}</p>
+        <p><strong>Author:</strong> {{ question.author.username }}</p>
+        <div class="question-meta">
+          <span>Created on: {{ question.date }} at {{ question.time }}</span>
+        </div>
       </div>
     </div>
   </div>
+
 </div>

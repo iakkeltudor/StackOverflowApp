@@ -1,10 +1,21 @@
+$primary-color: #007bff;
+$danger-color: #dc3545;
+
+.container {
+  background-color: white;
+  font-family: 'Roboto', sans-serif;
+  max-width: 800px;
+  margin: 2rem auto; /* Added margin */
+  padding: 0 1rem; /* Added padding */
+}
+
 .top-nav {
   background-color: #007bff;
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 2rem;
+  padding: 1rem 2rem; /* Increased padding */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -13,7 +24,8 @@
 }
 
 .logo img {
-  height: 2rem;
+  max-width: 100%;
+  max-height: 2rem;
 }
 
 .main-menu ul {
@@ -27,45 +39,86 @@
   margin-right: 1.5rem;
 }
 
-.main-menu a {
+.main-menu button {
+  background: none;
+  border: none;
   color: #fff;
-  text-decoration: none;
   font-size: 1rem;
+  cursor: pointer;
   transition: color 0.3s ease;
 }
 
-.main-menu a:hover {
-  color: #fff;
-  text-decoration: underline;
-}
-
-.container {
-  max-width: 50rem;
-  margin: 0 auto;
-  padding: 2rem;
+.main-menu button:hover {
+  color: #f0f0f0;
 }
 
 .user-details {
-  background-color: white;
-  position: relative;
-  z-index: 1;
-  border: 0.1rem solid #ccc;
-  border-radius: 0.5rem;
-  padding: 2rem;
+  margin-top: 2rem;
+}
 
-  .user-info h2 {
-    margin-top: 0;
-  }
+.user-info {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
 
-  .question h3 {
-    margin-top: 0;
-  }
+.user-info h2 {
+  font-size: 1.5rem;
+  color: $primary-color;
+  margin-bottom: 0.5rem;
+}
 
-  .question p {
-    margin-bottom: 1rem;
-  }
+.user-details h3 {
+  font-size: 1.25rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
 
-  .question p:last-child {
-    margin-bottom: 0;
-  }
+.user-details p {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 0.5rem; /* Adjusted margin */
+}
+
+.user-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #ccc;
+  padding: 1rem 0; /* Increased padding */
+}
+
+.ban-button {
+  padding: 0.5rem 1rem;
+  background-color: $danger-color;
+  color: #fff;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.ban-button:hover {
+  background-color: darken($danger-color, 10%);
+}
+
+.question {
+  margin-bottom: 2rem;
+}
+
+.question h3 {
+  font-size: 1.25rem;
+  color: $primary-color;
+  margin-bottom: 0.5rem;
+}
+
+.question p {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.question-meta {
+  font-size: 0.875rem;
+  color: #666;
 }

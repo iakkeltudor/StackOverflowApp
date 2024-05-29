@@ -1,0 +1,11 @@
+<!-- ban-user-dialog.component.html -->
+
+<div class="dialog-container">
+  <h2 class="dialog-header">Provide Reason to Ban User</h2>
+  <p>User ID: {{ data.userId }}</p>
+  <textarea class="textarea" placeholder="Reason for banning" [(ngModel)]="reasonForBan"></textarea>
+  <div class="actions">
+    <button mat-button class="cancel-button" (click)="onCancelClick()">Cancel</button>
+    <button mat-button class="ban-button" (click)="onBanClick()">Ban User</button>
+  </div>
+</div>

@@ -1,6 +1,6 @@
 <header class="top-nav">
   <button routerLink="/main-menu" class="logo">
-    <img src="./assets/logo.png" alt="Logo" class="logo" height="99" width="225">
+    <img src="./assets/logo.png" alt="Logo" class="logo">
   </button>
   <nav class="main-menu">
     <ul>
@@ -15,10 +15,19 @@
 <div class="question-container">
   <div class="tag-container">
     <div *ngFor="let tag of question?.tags" class="tag">{{ tag.name }}</div>
+    <div class="vote-container">
+      <button class="vote-button upvote" (click)="upvoteQuestion(question)">
+        <img src="./assets/arrow.png" alt="Upvote">
+      </button>
+      <div class="vote-score">{{ question?.score }}</div>
+      <button class="vote-button downvote" (click)="downvoteQuestion(question)">
+        <img src="./assets/arrow.png" alt="Downvote">
+      </button>
+    </div>
   </div>
   <div class="question-header">
     <div class="question-title">{{ question?.title }}</div>
-    <div class="question-author">Asked by {{ question?.author?.username }}</div>
+    <div class="question-author">Asked by {{ question?.author?.username }}: {{question?.author?.points}} points</div>
   </div>
   <div class="question-content">
     <p>{{ question?.text }}</p>
@@ -28,18 +37,34 @@
     <span>Created on: {{ question?.date }} at {{ question?.time }}</span>
   </div>
 
-  <div *ngIf="question?.answerSet" class="answer-container">
-    <div class="answer" *ngFor="let answer of question?.answerSet">
-      <div>{{ answer.author }} answered:</div>
+  <div *ngIf="answers.length > 0" class="answer-container">
+    <div class="answer" *ngFor="let answer of answers">
+      <div class="answer-vote-container">
+        <button class="vote-button upvote" (click)="upvoteAnswer(answer)">
+          <img src="./assets/arrow.png" alt="Upvote">
+        </button>
+        <div class="vote-score">{{ answer?.score }}</div>
+        <button class="vote-button downvote" (click)="downvoteAnswer(answer)">
+          <img src="./assets/arrow.png" alt="Downvote">
+        </button>
+      </div>
+      <div>{{ answer.author.username }} answered:</div>
       <div>{{ answer.text }}</div>
+      <img [src]="answer.imageUrl" alt="Answer Image" class="answer-image" *ngIf="answer.imageUrl">
+      <div class="question-meta">
+        <span>Answered on: {{ answer.date }} at {{ answer.time }}</span>
+        <div *ngIf="answer.author?.id === loggedInUserId || loggedInUser.role === 'ADMIN'" class="edit-delete-buttons">
+          <button (click)="editAnswer(answer)" class="edit-button">Update</button>
+          <button (click)="deleteAnswer(answer.id)" class="delete-button">Delete</button>
+        </div>
+      </div>
     </div>
   </div>
 
   <div class="answer-section">
-    <textarea [(ngModel)]="answer" placeholder="Your answer..." rows="3" class="answer-input"></textarea>
-    <div class="answer-meta">
-      <span>Answered on: {{ currentDate }} at {{ currentTime }}</span>
-    </div>
+    <textarea [(ngModel)]="answerText" placeholder="Your answer..." rows="3" class="answer-input"></textarea>
+    <input type="file" accept="image/*" (change)="onImageSelected($event)" class="image-input">
     <button (click)="submitAnswer()" class="submit-button">Submit Answer</button>
   </div>
+
 </div>

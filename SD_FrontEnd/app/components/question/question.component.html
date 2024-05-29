@@ -1,6 +1,6 @@
 <header class="top-nav">
   <button routerLink="/main-menu" class="logo">
-    <img src="./assets/logo.png" alt="Logo" class="logo" height="99" width="225">
+    <img src="./assets/logo.png" alt="Logo" class="logo">
   </button>
   <nav class="main-menu">
     <ul>
@@ -16,13 +16,30 @@
   <button (click)="goToCreateQuestion()" class="create-question-button">Create Question</button>
 </div>
 
+<div class="filter-container">
+  <input type="text" placeholder="Search by title" [(ngModel)]="searchText">
+  <input type="text" placeholder="Search by tag" [(ngModel)]="searchTag">
+  <input type="text" placeholder="Search by user" [(ngModel)]="searchUser">
+  <button (click)="filterOwnQuestions()">Show My Questions</button>
+  <button (click)="applyFilter()">Apply Filter</button>
+</div>
+
 <div *ngFor="let question of questions" class="question-container" [class.hover]="question.hovered" (click)="goToAnswerPage(question)" (mouseenter)="onMouseEnter(question)" (mouseleave)="onMouseLeave()">
+  <div class="vote-container">
+    <button class="vote-button upvote" (click)="upvoteQuestion(question)">
+      <img src="./assets/arrow.png" alt="Upvote">
+    </button>
+    <div class="vote-score">{{ question.score }}</div>
+    <button class="vote-button downvote" (click)="downvoteQuestion(question)">
+      <img src="./assets/arrow.png" alt="Downvote">
+    </button>
+  </div>
   <div class="tag-container">
     <div *ngFor="let tag of question.tags" class="tag">{{ tag.name }}</div>
   </div>
   <div class="question-header">
     <div class="question-title">{{ question.title }}</div>
-    <div class="question-author">Asked by {{ question.author.username }}</div>
+    <div class="question-author">Asked by {{ question.author.username }}: {{question.author.points}} points</div>
   </div>
   <div class="question-content">
     <p>{{ question.text }}</p>
@@ -31,12 +48,8 @@
   <div class="question-meta">
     <span>Created on: {{ question.date }} at {{ question.time }}</span>
   </div>
-
-  <div *ngIf="question.author.id === loggedInUserId" class="edit-delete-buttons">
+  <div *ngIf="question.author.id === loggedInUserId || loggedInUser.role === 'ADMIN'" class="edit-delete-buttons">
     <button (click)="editQuestion(question)" class="edit-button">Edit</button>
     <button (click)="deleteQuestion(question.id)" class="delete-button">Delete</button>
   </div>
-
-
 </div>
-

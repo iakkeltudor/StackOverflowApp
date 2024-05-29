@@ -1,79 +1,114 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {Router, RouterLink} from '@angular/router';
 import { ButtonModule } from 'primeng/button';
+import {FormsModule} from "@angular/forms";
+import {BrowserModule} from "@angular/platform-browser";
+import {CommonModule, NgForOf, NgIf} from "@angular/common";
+import {UserService} from "../../service/user.service";
+import {User} from "./user.model";
+import {QuestionService} from "../../service/question.service";
+import {Question} from "../question/question.model";
+import {ImageService} from "../../service/image.service";
+import { MatDialog } from '@angular/material/dialog';
+import { BanUserDialogComponent } from '../ban-user-dialog/ban-user-dialog.component';
 
 @Component({
   selector: 'app-user',
+  standalone: true,
   templateUrl: './user.component.html',
+  imports: [ButtonModule, FormsModule, CommonModule, NgForOf, NgIf, RouterLink],
   styleUrls: ['./user.component.scss']
 })
-export class UserComponent {
+export class UserComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private dialog: MatDialog, private imageService: ImageService, private router: Router, private userService: UserService, private questionService: QuestionService) { }
 
-  // users: any[] = [
-  //   {
-  //     username: 'user1',
-  //     questions: [
-  //       {
-  //         author: 'User 1',
-  //         title: 'User 1 Question 1',
-  //         body: 'This is the body of User 1 Question 1',
-  //         creationTime: '10:00 AM',
-  //         creationDate: '2024-04-15'
-  //       },
-  //       {
-  //         author: 'User 1',
-  //         title: 'User 1 Question 2',
-  //         body: 'This is the body of User 1 Question 2',
-  //         creationTime: '11:00 AM',
-  //         creationDate: '2024-04-15'
-  //       },
-  //       // Add more sample questions for user1 as needed
-  //     ]
-  //   },
-  //   {
-  //     username: 'user2',
-  //     questions: [
-  //       {
-  //         author: 'User 2',
-  //         title: 'User 2 Question 1',
-  //         body: 'This is the body of User 2 Question 1',
-  //         creationTime: '12:00 PM',
-  //         creationDate: '2024-04-15'
-  //       },
-  //       {
-  //         author: 'User 2',
-  //         title: 'User 2 Question 2',
-  //         body: 'This is the body of User 2 Question 2',
-  //         creationTime: '01:00 PM',
-  //         creationDate: '2024-04-15'
-  //       },
-  //       // Add more sample questions for user2 as needed
-  //     ]
-  //   },
-  //   // Add more hard-coded users as needed
-  // ];
+  protected loggedInUserId: number | undefined;
 
-  user: any = {
-    username: 'user1',
-    question: {
-      author: 'User 1',
-      title: 'User 1 Question',
-      body: 'This is the body of User 1 Question',
-      creationTime: '10:00 AM',
-      creationDate: '2024-04-15'
+  user: User = new User();
+  questions: Question[] = [];
+  allUsers: User[] = [];
+
+  ngOnInit() {
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      this.loggedInUserId = parseInt(userId, 10);
     }
-  };
+    console.log("logged in user id: ", this.loggedInUserId);
+    if(!this.loggedInUserId) {
+      this.logout();
+    }
+
+    this.userService.getUserById(this.loggedInUserId).subscribe((data: any) => {
+      this.user = data;
+      console.log(this.user);
+
+      if (this.user.role === 'ADMIN') {
+        this.loadAllUsers();
+      }
+    });
+    this.loadUserQuestions();
+  }
+
+  loadAllUsers() {
+    this.userService.getAllUsers().subscribe((users: User[]) => {
+      this.allUsers = users;
+    });
+  }
+
+  loadUserQuestions() {
+    this.questionService.getOwnQuestions(this.loggedInUserId).subscribe((data: any[]) => {
+      this.questions = data.map(question => {
+        const [year, month, day, hour, minute] = question.creationDateTime;
+        const date = `${year}-${month}-${day}`;
+        const time = `${hour}:${minute.toString().padStart(2, '0')}`;
+        question.date = date;
+        question.time = time;
+        if (question.imagePath) {
+          this.loadImage(question);
+        }
+        return question;
+      });
+    });
+  }
+
+  private loadImage(question: any) {
+    this.imageService.getImage(question.imagePath).subscribe(blob => {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        question.imageUrl = e.target.result;
+      };
+      reader.readAsDataURL(blob);
+    });
+  }
 
   logout() {
     this.router.navigate(['/login']);
   }
+
   goToUser() {
     this.router.navigate(['/user']);
   }
 
   goToHome() {
     this.router.navigate(['/question']);
+  }
+
+  openBanUserDialog(userId: number): void {
+    const dialogRef = this.dialog.open(BanUserDialogComponent, {
+      width: '400px',
+      data: { userId }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // Handle dialog close event if needed
+    });
+  }
+
+  unbanUser(userId: number): void {
+    this.userService.unBanUser(userId).subscribe(() => {
+      alert('User unbanned');
+      this.loadAllUsers();
+    });
   }
 }

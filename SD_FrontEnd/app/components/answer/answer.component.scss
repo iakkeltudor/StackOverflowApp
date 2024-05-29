@@ -1,4 +1,5 @@
 $base-font-size: 16px;
+
 .top-nav {
   background-color: #007bff;
   color: #fff;
@@ -8,26 +9,6 @@ $base-font-size: 16px;
   padding: 0.5rem 2rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
-.create-question-button {
-  padding: 1rem 2rem;
-  background-color: #006bff;
-  color: #fff;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-top: 1rem;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.create-question-button:hover,
-.main-menu button:hover {
-  background-color: #0056b3;
-}
-
 
 .logo {
   flex: 0 0 auto;
@@ -49,16 +30,17 @@ $base-font-size: 16px;
   margin-right: 1.5rem;
 }
 
-.main-menu a {
+.main-menu button {
+  background: none;
+  border: none;
   color: #fff;
-  text-decoration: none;
   font-size: 1rem;
+  cursor: pointer;
   transition: color 0.3s ease;
 }
 
-.main-menu a:hover {
-  color: #fff;
-  text-decoration: underline;
+.main-menu button:hover {
+  color: #f0f0f0;
 }
 
 .question-container {
@@ -78,6 +60,91 @@ $base-font-size: 16px;
   $button-font-size: 1rem;
   $button-border-radius: 0.25rem;
   $button-transition: background-color 0.3s ease, color 0.3s ease;
+
+  .vote-container {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .vote-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .vote-button img {
+    width: 20px;
+    height: 20px;
+  }
+
+  .upvote img {
+    transform: rotate(0deg);
+  }
+
+  .downvote img {
+    transform: rotate(180deg);
+  }
+
+  .vote-score {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  .answer-container {
+    position: relative;
+    border-top: 0.0625rem solid #ccc;
+    padding-top: 1.25rem;
+    margin-top: 1.25rem;
+
+      .answer-vote-container {
+        position: relative;
+        top: 1rem;
+        right: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .vote-button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+      }
+
+      .vote-button img {
+        width: 20px;
+        height: 20px;
+      }
+
+      .upvote img {
+        transform: rotate(0deg);
+      }
+
+      .downvote img {
+        transform: rotate(180deg);
+      }
+
+      .vote-score {
+        margin: 0.5rem 0;
+        font-size: 1rem;
+        font-weight: bold;
+      }
+
+      .answer-image {
+        max-width: 100%;
+        height: auto;
+        margin: 0 auto;
+        display: block;
+        max-height: 25rem;
+      }
+  }
 
   .edit-delete-buttons {
     display: flex;
@@ -200,8 +267,4 @@ $base-font-size: 16px;
     justify-content: center;
     margin-top: 2rem;
   }
-
 }
-
-
-
